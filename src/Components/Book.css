@@ -1,0 +1,26 @@
+.book {
+    width: 140px;
+}
+
+.book-title,
+.book-authors {
+    font-size: 0.8em;
+}
+
+.book-title {
+    margin: 10px 0;
+}
+
+.book-authors {
+    color: #999;
+}
+.book-authors p {
+    margin: 1px 0;
+}
+
+.book-top {
+    position: relative;
+    height: 200px;
+    display: flex;
+    align-items: flex-end;
+}
