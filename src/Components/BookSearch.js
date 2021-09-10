@@ -8,19 +8,33 @@ import PropTypes from "prop-types";
 class BookSearch extends Component {
     state = {
         searchResult: [],
+        query: "",
     };
 
-    handleOnChangeSearch = async (query) => {
+    handleOnChangeSearch = (query) => {
+        this.setState({ query });
+        this.fetchResults(query);
+    };
+
+    fetchResults = async (query) => {
         try {
-            if (query) {
-                const res = await BooksAPI.search(query);
-                if (Array.isArray(res)) {
-                    this.setState({ searchResult: res });
-                }
-            } else {
-                this.setState(() => ({
+            if (!query) {
+                this.setState({
                     searchResult: [],
-                }));
+                });
+            } else {
+                const res = await BooksAPI.search(query);
+                if (query === this.state.query) {
+                    if (res.hasOwnProperty("error")) {
+                        this.setState({
+                            searchResult: [],
+                        });
+                    } else {
+                        this.setState({
+                            searchResult: res,
+                        });
+                    }
+                }
             }
         } catch (e) {
             console.log(e);
@@ -28,7 +42,7 @@ class BookSearch extends Component {
     };
 
     render() {
-        const { searchResult } = this.state;
+        const { searchResult, query } = this.state;
         const { booksOnShelf, onBookShelfChange } = this.props;
         return (
             <div className="search-books">
@@ -47,11 +61,12 @@ class BookSearch extends Component {
                             //         );
                             //     }
                             // }}
-                            onChange={(event) =>
+                            value={query}
+                            onChange={(event) => {
                                 this.handleOnChangeSearch(
                                     event.target.value.trim()
-                                )
-                            }
+                                );
+                            }}
                         />
                     </div>
                 </div>
