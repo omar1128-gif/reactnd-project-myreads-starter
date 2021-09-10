@@ -30,9 +30,16 @@ class BooksApp extends Component {
 
     updateBookShelf = async (book, shelf) => {
         try {
+            const { books } = this.state;
             await BooksAPI.update(book, shelf);
-            const res = await BooksAPI.getAll();
-            this.setState({ books: res });
+            book.shelf = shelf;
+            const bookIndex = books.findIndex((b) => b.id === book.id);
+            if (bookIndex === -1) {
+                this.setState({ books: [...books, book] });
+            } else {
+                books[bookIndex].shelf = shelf;
+                this.setState({ books });
+            }
         } catch (e) {
             console.log(e);
         }
