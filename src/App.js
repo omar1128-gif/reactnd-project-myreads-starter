@@ -3,6 +3,7 @@ import * as BooksAPI from "./BooksAPI";
 import { Link, Route } from "react-router-dom";
 import "./App.css";
 import BookShelf from "./Components/BookShelf";
+import BookSearch from "./Components/BookSearch";
 
 const bookShelves = [
     {
@@ -18,9 +19,24 @@ class BooksApp extends Component {
         books: [],
     };
 
-    componentDidMount() {
-        BooksAPI.getAll().then((res) => this.setState({ books: res }));
+    async componentDidMount() {
+        try {
+            const res = await BooksAPI.getAll();
+            this.setState({ books: res });
+        } catch (e) {
+            console.log(e);
+        }
     }
+
+    updateBookShelf = async (book, shelf) => {
+        try {
+            await BooksAPI.update(book, shelf);
+            const res = await BooksAPI.getAll();
+            this.setState({ books: res });
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     render() {
         const { books } = this.state;
@@ -29,22 +45,10 @@ class BooksApp extends Component {
                 <Route
                     path="/search"
                     render={() => (
-                        <div className="search-books">
-                            <div className="search-books-bar">
-                                <Link to="/" className="close-search">
-                                    Close
-                                </Link>
-                                <div className="search-books-input-wrapper">
-                                    <input
-                                        type="text"
-                                        placeholder="Search by title or author"
-                                    />
-                                </div>
-                            </div>
-                            <div className="search-books-results">
-                                <ol className="books-grid" />
-                            </div>
-                        </div>
+                        <BookSearch
+                            booksOnShelf={books}
+                            onBookShelfChange={this.updateBookShelf}
+                        />
                     )}
                 />
                 <Route
@@ -59,11 +63,18 @@ class BooksApp extends Component {
                                 <div>
                                     {bookShelves.map((shelf) => (
                                         <BookShelf
+                                            key={shelf.status}
                                             shelf={shelf.title}
                                             books={books.filter(
                                                 (book) =>
                                                     book.shelf === shelf.status
                                             )}
+                                            onBookShelfChange={(book, shelf) =>
+                                                this.updateBookShelf(
+                                                    book,
+                                                    shelf
+                                                )
+                                            }
                                         />
                                     ))}
                                 </div>
