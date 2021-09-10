@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Book from "./Book";
 import "./BookShelf.css";
+import PropTypes from "prop-types";
 
 class BookShelf extends Component {
     render() {
@@ -13,6 +14,7 @@ class BookShelf extends Component {
                         {books.map((book) => (
                             <Book
                                 key={book.id}
+                                id={book.id}
                                 book={book}
                                 onStatusChange={(book, newShelf) => {
                                     onBookShelfChange(book, newShelf);
@@ -25,5 +27,11 @@ class BookShelf extends Component {
         );
     }
 }
+
+BookShelf.propTypes = {
+    books: PropTypes.array.isRequired,
+    shelf: PropTypes.string.isRequired,
+    onBookShelfChange: PropTypes.func.isRequired,
+};
 
 export default BookShelf;

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Book.css";
+import PropTypes from "prop-types";
 
 class Book extends Component {
     render() {
@@ -64,5 +65,11 @@ class Book extends Component {
         );
     }
 }
+
+Book.propTypes = {
+    book: PropTypes.object.isRequired,
+    id: PropTypes.string.isRequired,
+    onStatusChange: PropTypes.func.isRequired,
+};
 
 export default Book;

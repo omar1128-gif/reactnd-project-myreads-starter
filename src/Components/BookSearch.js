@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import Book from "./Book";
 import "./BookSearch.css";
 import * as BooksAPI from "../BooksAPI";
+import PropTypes from "prop-types";
 
 class BookSearch extends Component {
     state = {
@@ -80,5 +81,10 @@ class BookSearch extends Component {
         );
     }
 }
+
+BookSearch.propTypes = {
+    booksOnShelf: PropTypes.array.isRequired,
+    onBookShelfChange: PropTypes.func.isRequired,
+};
 
 export default BookSearch;
