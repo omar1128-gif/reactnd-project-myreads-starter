@@ -39,13 +39,18 @@ class BookSearch extends Component {
                         <input
                             type="text"
                             placeholder="Search by title or author"
-                            onKeyPress={(event) => {
-                                if (event.key === "Enter") {
-                                    this.handleOnChangeSearch(
-                                        event.target.value.trim()
-                                    );
-                                }
-                            }}
+                            // onKeyPress={(event) => {
+                            //     if (event.key === "Enter") {
+                            //         this.handleOnChangeSearch(
+                            //             event.target.value.trim()
+                            //         );
+                            //     }
+                            // }}
+                            onChange={(event) =>
+                                this.handleOnChangeSearch(
+                                    event.target.value.trim()
+                                )
+                            }
                         />
                     </div>
                 </div>
